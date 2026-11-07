@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f4f2">
+    <title>Med-BEAM patient journey · Knit Health</title>
+    <script src="./patient-journey.js" defer></script>
+    <style>
+      @font-face {
+        font-family: KnitPreview;
+        src: local("Gilroy Medium"), local("Gilroy-Medium");
+        font-weight: 500;
+      }
+
+      :root {
+        --paper: #f4f4f2;
+        --ink: #121a24;
+        --inset: clamp(22px, 8.28vw, 159px);
+        font: 500 16px/1.4 KnitPreview, "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: var(--ink);
+        background: var(--paper);
+      }
+      * { box-sizing: border-box; }
+      body, h1, p { margin: 0; }
+      main {
+        max-width: 1920px;
+        margin-inline: auto;
+        padding-block: clamp(70px, 9vw, 174px) 28px;
+      }
+      .copy {
+        display: grid;
+        grid-template-columns: minmax(0, 36.67%) minmax(0, 58.67%);
+        margin-inline: var(--inset);
+        align-items: start;
+      }
+      h1 {
+        font-weight: 500;
+        font-size: clamp(40px, 3.18vw, 61px);
+        line-height: .95;
+        letter-spacing: -.048em;
+      }
+      .copy p {
+        max-width: 58ch;
+        padding-top: .08em;
+        font-size: clamp(19px, 1.46vw, 28px);
+        line-height: 1.15;
+        letter-spacing: -.031em;
+        text-wrap: pretty;
+      }
+      .graphic { margin: clamp(60px, 8vw, 140px) var(--inset) 0; }
+      knit-patient-journey { display: block; width: 100%; }
+      .controls {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+        margin-top: clamp(18px, 2.8vw, 44px);
+        color: #414955;
+        font: 400 12px/1.3 KnitPreview, "Helvetica Neue", Arial, sans-serif;
+      }
+      .controls[hidden] { display: none; }
+      .controls button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 0 5px;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+      .controls button:hover { color: #141821; }
+      .controls svg { width: 15px; height: 15px; }
+      .controls label { display: inline-flex; align-items: center; }
+      .controls input {
+        margin: 0;
+        height: 44px;
+        width: 90px;
+        accent-color: #6755a3;
+        cursor: pointer;
+      }
+      :focus-visible { outline: 2px solid #6142ab; outline-offset: 3px; }
+      @media (min-width: 701px) and (max-width: 980px) {
+        .copy { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 20px; }
+        h1 { font-size: clamp(35px, 4.15vw, 40px); }
+      }
+      @media (max-width: 700px) {
+        :root { --inset: clamp(20px, 5.5vw, 30px); }
+        main { padding-top: 56px; }
+        .copy { grid-template-columns: 1fr; gap: 16px; }
+        h1 { font-size: clamp(38px, 7vw, 46px); }
+        .copy p { max-width: 42ch; padding: 0; font-size: 18px; }
+        .graphic { margin-top: clamp(40px, 9vw, 60px); }
+        .controls { margin-top: 20px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="copy">
+        <h1>The world model<br>for healthcare</h1>
+        <p>Trained on billions of real clinical decisions from 140 million patient records, Med-BEAM predicts and recommends what should happen next.</p>
+      </header>
+      <div class="graphic">
+        <knit-patient-journey id="journey" progress="1"></knit-patient-journey>
+        <noscript>Enable JavaScript to view the patient journey.</noscript>
+        <div class="controls" role="group" aria-label="Preview motion" hidden>
+          <button type="button" id="replay" aria-controls="journey">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.65">
+              <path d="M4.5 10a7.5 7.5 0 1 1 .6 6.5M4.5 4.5V10H10"/>
+            </svg>
+            Replay
+          </button>
+          <label>
+            <input type="range" id="scrub" min="0" max="100" value="100" aria-label="Chart reveal" aria-controls="journey" aria-valuetext="100 percent">
+          </label>
+        </div>
+      </div>
+    </main>
+    <script>
+      const chart = document.querySelector("#journey");
+      const scrub = document.querySelector("#scrub");
+      const replay = document.querySelector("#replay");
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+      let frame = 0;
+
+      function show(progress) {
+        chart.progress = progress;
+        const percent = Math.round(progress * 100);
+        scrub.value = percent;
+        scrub.setAttribute("aria-valuetext", percent + " percent");
+      }
+
+      function stop() {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+
+      function play() {
+        stop();
+        if (reducedMotion.matches) {
+          show(1);
+          return;
+        }
+        show(0);
+        const start = performance.now();
+        const draw = now => {
+          const position = Math.min(1, (now - start) / 3600);
+          show(position);
+          frame = position < 1 ? requestAnimationFrame(draw) : 0;
+        };
+        frame = requestAnimationFrame(draw);
+      }
+
+      replay.addEventListener("click", play);
+      scrub.addEventListener("input", () => {
+        stop();
+        show(scrub.valueAsNumber / 100);
+      });
+      reducedMotion.addEventListener("change", () => {
+        if (reducedMotion.matches && frame) {
+          stop();
+          show(1);
+        }
+      });
+      customElements.whenDefined("knit-patient-journey").then(() => {
+        document.querySelector(".controls").hidden = false;
+      });
+    </script>
+  </body>
+</html>
