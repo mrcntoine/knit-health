@@ -4687,7 +4687,7 @@ void main() {
           :host{display:block;position:relative;width:100%;height:var(--journey-height,clamp(275px,26vw,410px));color:var(--ink,#121a24);pointer-events:auto}
           svg{display:block;position:relative;width:100%;height:100%;overflow:visible;isolation:isolate;pointer-events:none}
           canvas{position:absolute;pointer-events:none}
-          .ribbon{mix-blend-mode:multiply;pointer-events:none}
+          .ribbon{pointer-events:none}
           .dot{pointer-events:auto}
           .dot__hit{fill:transparent}
           .dot__core{fill:var(--journey-dot,var(--dot,#4F3E78));stroke:var(--journey-paper,var(--paper,#f4f4f2))}
