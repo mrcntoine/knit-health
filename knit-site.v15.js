@@ -120,6 +120,7 @@
     const p = clamp((vh - top) / vh); // 0 = footer below the fold, 1 = footer fills the screen
     const fade = clamp((p - 0.4) / 0.35);
     root.classList.toggle('is-end', p > 0.5);
+    root.classList.toggle('footer-in', p > 0.55); // footer content fades in, as on Home
 
     if (masthead) {
       const menuOpen = root.classList.contains('menu-open');
@@ -131,7 +132,7 @@
     }
 
     if (underline) {
-      const u = reduce.matches ? 1 : clamp((p - 0.35) / 0.65);
+      const u = reduce.matches ? 1 : clamp((p - 0.55) / 0.45);
       underline.style.clipPath = `inset(0 ${((1 - u) * 100).toFixed(2)}% 0 0)`;
     }
     const n = marks.length;

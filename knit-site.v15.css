@@ -22,4 +22,4 @@ body:not(:has(#hero)) .masthead{--bar:var(--paper)}
 body:not(:has(#hero)) .masthead{background-color:var(--paper)}
 /* Wordmark: keep it on its own layer (as during the intro), where iOS Safari draws the mask without clipping */
 .wordmark{will-change:transform;transform:translateZ(0)}
-.masthead:is(.on-purple,.on-dark) .nav a:is(:hover,[aria-current=true]){color:var(--_primitives---colors--line-bright)}.menu-toggle svg.menu-toggle__icon{overflow:visible}
+.masthead:is(.on-purple,.on-dark) .nav a:is(:hover,[aria-current=true]){color:var(--_primitives---colors--line-bright)}.menu-toggle svg.menu-toggle__icon{overflow:visible}html.is-page:not(.footer-in) .world__footer>*{opacity:0}
