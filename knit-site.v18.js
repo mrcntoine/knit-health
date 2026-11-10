@@ -2,6 +2,7 @@
    - Page transitions (paper veil out, content rises in)
    - External post links (a[data-external])
    - No dragging of links or images
+   - Form submit via the Button component (a.knit-button inside a Webflow form)
    - Inner pages only: Lenis smooth scrolling, Home-style navbar (hide on scroll down,
      fade at the footer), mobile menu, footer mark + underline reveal.
    Home keeps its own scroll, navbar, menu and footer logic in knit.js. */
@@ -22,6 +23,29 @@
     const t = e.target;
     if (t instanceof Element && t.closest('a, img')) e.preventDefault();
   }, true);
+
+  /* ---------- Form submit via the Button component ---------- */
+  const submitForm = (form) => {
+    if (!form.reportValidity()) return;
+    const btn = form.querySelector('a.knit-button');
+    const label = btn && btn.querySelector('div');
+    if (label) { label.dataset.text = label.textContent; label.textContent = 'Sending\u2026'; }
+    form.requestSubmit(form.querySelector('[type=submit]') || undefined);
+    if (label) setTimeout(() => { if (form.offsetParent !== null) label.textContent = label.dataset.text; }, 6000);
+  };
+  d.addEventListener('click', (e) => {
+    const btn = e.target instanceof Element && e.target.closest('form a.knit-button');
+    if (!btn) return;
+    e.preventDefault();
+    submitForm(btn.closest('form'));
+  });
+  d.addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (e.key !== 'Enter' || !(t instanceof HTMLInputElement) || !t.form) return;
+    if (!t.form.querySelector('a.knit-button')) return;
+    e.preventDefault();
+    submitForm(t.form);
+  });
 
   /* ---------- External post links ---------- */
   for (const a of d.querySelectorAll('a[data-external]')) {
