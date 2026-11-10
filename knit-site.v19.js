@@ -38,8 +38,9 @@
     const btn = e.target instanceof Element && e.target.closest('form a.knit-button');
     if (!btn) return;
     e.preventDefault();
+    e.stopPropagation();
     submitForm(btn.closest('form'));
-  });
+  }, true);
   d.addEventListener('keydown', (e) => {
     const t = e.target;
     if (e.key !== 'Enter' || !(t instanceof HTMLInputElement) || !t.form) return;
