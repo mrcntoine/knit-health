@@ -4694,7 +4694,7 @@ void main() {
           .dot__ring{fill:var(--journey-paper,var(--paper,#f4f4f2));stroke:var(--journey-dot,var(--dot,#4F3E78))}
           .dot__halo{fill:var(--journey-dot,var(--dot,#4F3E78));opacity:0}
           .dot__mark,.dot__halo{transform-box:fill-box;transform-origin:center;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s cubic-bezier(.2,.8,.2,1)}
-          @media (hover:hover){
+          @media (hover:hover) and (min-width:992px){
             .dot:hover .dot__mark{transform:scale(1.6)}
             .dot:hover .dot__halo{opacity:.22;transform:scale(2.9)}
             .dot--now:hover .dot__mark{transform:scale(1.3)}
