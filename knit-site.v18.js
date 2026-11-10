@@ -26,12 +26,13 @@
 
   /* ---------- Form submit via the Button component ---------- */
   const submitForm = (form) => {
-    if (!form.reportValidity()) return;
+    if (form.dataset.sending || !form.reportValidity()) return;
+    form.dataset.sending = '1';
     const btn = form.querySelector('a.knit-button');
     const label = btn && btn.querySelector('div');
     if (label) { label.dataset.text = label.textContent; label.textContent = 'Sending\u2026'; }
     form.requestSubmit(form.querySelector('[type=submit]') || undefined);
-    if (label) setTimeout(() => { if (form.offsetParent !== null) label.textContent = label.dataset.text; }, 6000);
+    if (label) setTimeout(() => { delete form.dataset.sending; if (form.offsetParent !== null) label.textContent = label.dataset.text; }, 6000);
   };
   d.addEventListener('click', (e) => {
     const btn = e.target instanceof Element && e.target.closest('form a.knit-button');
