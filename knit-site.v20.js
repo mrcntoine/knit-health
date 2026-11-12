@@ -1,6 +1,7 @@
 /* Knit Health: site-wide behaviour (all pages)
    - Page transitions (paper veil out, content rises in)
-   - External post links (a[data-external])
+   - Newsroom cards: Type "News" opens the External Link in a new tab, Type "Blog" opens the post page
+     (a[data-external] bound to External Link, data-type bound to Type)
    - No dragging of links or images
    - Form submit via the Button component (a.knit-button inside a Webflow form)
    - Inner pages only: Lenis smooth scrolling, Home-style navbar (hide on scroll down,
@@ -49,10 +50,14 @@
     submitForm(t.form);
   });
 
-  /* ---------- External post links ---------- */
+  /* ---------- Newsroom cards: News -> External Link, Blog -> post page ---------- */
   for (const a of d.querySelectorAll('a[data-external]')) {
-    const url = a.dataset.external;
-    if (url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+    const url = (a.dataset.external || '').trim();
+    const type = (a.dataset.type || '').trim().toLowerCase();
+    // Without a Type, fall back to the External Link when one is set
+    const external = type ? type === 'news' : !!url;
+    if (external && url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+    else if (external) log('News item without an External Link, keeping the post page:', a.getAttribute('href'));
   }
 
   /* ---------- Page transitions ---------- */
