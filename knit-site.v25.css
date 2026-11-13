@@ -25,3 +25,6 @@ a.wordmark{color:var(--wm,var(--ink));transition:color .25s}.wordmark__svg{displ
 
 /* Wordmark: proportions of the Knit Health wordmark SVG (117 x 20) */
 .wordmark{aspect-ratio:117/20}
+
+/* Newsroom post: hide the Featured Image block when the post has no image */
+.margin-top:has(> .image-frame > img.w-dyn-bind-empty){display:none}
