@@ -10,4 +10,4 @@ html.flow .open__cta-wrap [id=open-cta]{opacity:1}
 
 /* Phones: one gap between the headline, Book a Demo and each beat. It grows with the screen height but always
    leaves room under the last beat for the thread to turn towards Med-BEAM. */
-@media(max-width:759px){html{--beat-gap:clamp(24px,calc((100svh - 580px) / 3),56px)}.open__side [id=open-cta]{margin-top:var(--beat-gap)}.open__list{margin-top:var(--beat-gap)}.open__list .open__beat{padding-top:0}.open__list .open__beat+.open__beat{margin-top:var(--beat-gap)}}
+@media(max-width:759px){html{--beat-gap:clamp(24px,calc(10.8svh - 40px),56px)}.open__side [id=open-cta]{margin-top:var(--beat-gap)}.open__list{margin-top:var(--beat-gap)}.open__list .open__beat{padding-top:0}.open__list .open__beat+.open__beat{margin-top:var(--beat-gap)}}
