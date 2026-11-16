@@ -8,9 +8,6 @@ body::before{content:"";position:fixed;inset:0;z-index:5;background:var(--paper)
 :is(#hero,.open,.next) :is(h1,h2,h3,h4,h5,h6,p,li,a,.hero-line,.lead-line,.trust__body,.trust__label,.world__desc,.big-stat,.footer-legal){pointer-events:auto}
 html.flow .open__cta-wrap [id=open-cta]{opacity:1}
 
-/* Phones: one gap between the headline, Book a Demo and each beat */
-@media(max-width:759px){html{--beat-gap:56px}.open__side [id=open-cta]{margin-top:var(--beat-gap)}.open__list{margin-top:var(--beat-gap)}.open__list .open__beat{padding-top:0}.open__list .open__beat+.open__beat{margin-top:var(--beat-gap)}}
-@media(max-width:759px) and (max-height:800px){html{--beat-gap:48px}}
-@media(max-width:759px) and (max-height:700px){html{--beat-gap:40px}}
-@media(max-width:759px) and (max-height:620px){html{--beat-gap:32px}}
-
+/* Phones: one gap between the headline, Book a Demo and each beat. It grows with the screen height but always
+   leaves room under the last beat for the thread to turn towards Med-BEAM. */
+@media(max-width:759px){html{--beat-gap:clamp(24px,calc((100svh - 580px) / 3),56px)}.open__side [id=open-cta]{margin-top:var(--beat-gap)}.open__list{margin-top:var(--beat-gap)}.open__list .open__beat{padding-top:0}.open__list .open__beat+.open__beat{margin-top:var(--beat-gap)}}
